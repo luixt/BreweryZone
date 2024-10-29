@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import Table from './components/Table';
 import Header from './components/Header';
+import BreweryChart from './components/BreweryChart';
+import BreweryDetail from './components/BreweryDetail';
 import './App.css'; // For adding styles
 
 function App() {
@@ -53,6 +56,12 @@ function App() {
   return (
     <div className="app-container">
 
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/chart">View Brewery Types Chart</Link>
+      </nav>
+
+            <br></br>
+
       <div className='row'>
         {/* Check if breweries has at least one item before accessing state and country */}
         {breweries.length > 0 && (
@@ -98,32 +107,43 @@ function App() {
 
       <h1>BREWERY LIST</h1>
 
-      {/* Render Table with breweries */}
-      {filteredBreweries.length > 0 ? (
-        <table className="brewery-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone #</th>
-              <th>Postal Code</th>
-              <th>Website</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredBreweries.map((brewery) => (
-              <Table
-                key={brewery.id}
-                name={brewery.name}
-                phone={brewery.phone}
-                postal={brewery.postal_code}
-                url={brewery.website_url}
-              />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No breweries found</p>
-      )}
+      <Routes>
+        <Route path="/" element={
+          <div>
+            {filteredBreweries.length > 0 ? (
+              <table className="brewery-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone #</th>
+                    <th>Postal Code</th>
+                    <th>Website</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredBreweries.map((brewery) => (
+                     <Table
+                     key={brewery.id}
+                     id={brewery.id}
+                     name={brewery.name}
+                     phone={brewery.phone}
+                     postal={brewery.postal_code}
+                     url={brewery.website_url}
+                     breweries_list={breweries}
+                   />
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No breweries found</p>
+            )}
+          </div>
+        } />
+
+        <Route path="/chart" element={<BreweryChart breweries={breweries} />} />
+        <Route path="/brewery/:id" element={<BreweryDetail breweries={breweries} />} />
+      </Routes>
+
     </div>
   );
 }

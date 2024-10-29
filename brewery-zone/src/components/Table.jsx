@@ -1,11 +1,10 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
-const Table = ({ name, phone, postal, url }) => {
-
-
+const Table = ({ id, name, phone, postal, url }) => {
   return (
     <tr>
-      <td>{name}</td>
+      <td><Link to={`/brewery/${id}`}>{name}</Link></td>
       <td>{phone}</td>
       <td>{postal}</td>
       <td>
